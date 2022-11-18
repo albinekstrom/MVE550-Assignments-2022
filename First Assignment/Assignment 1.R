@@ -6,7 +6,8 @@ barplot(a,names.arg = format(round(p, 2), nsmall = 2))
 
 ## b) Number of requests for the 7th hour
 lambda <- 21/6 # this will not depend on lambda, hence lambda can take any value
-barplot(dpois(p,lambda)*dgamma(lambda,21,6)/dgamma(lambda,21+p,7), names.arg = p)
+k <- 0:10
+barplot(dpois(k,lambda)*dgamma(lambda,21,6)/dgamma(lambda,21+k,7), names.arg = k)
 
 ## c)
 b <- dpois(2,p)*dpois(6,p)*dpois(3,p)*dpois(4,p)*dpois(3,p)*dpois(3,p) # likelihood
