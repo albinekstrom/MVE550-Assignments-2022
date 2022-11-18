@@ -33,6 +33,11 @@ Q<-m[0:3,0:3]
 R<-m[0:3,4:5]
 O<-m[4:5,0:3]
 
-I<-diag(3)
-F=solve(I-Q)
-F%*%R # Prob for stepping on 3 or 6 from 1,2 or 4
+I <- diag(3)
+F <- solve(I-Q)
+FR <- F%*%R # Prob for stepping on 3 or 6 from 1,2 or 4
+
+1/4*sum(FR[1:3,1])+1/4
+
+
+
