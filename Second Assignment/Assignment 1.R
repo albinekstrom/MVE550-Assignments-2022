@@ -42,7 +42,7 @@ simulate1 <- function(y) {
   m=get_expected_m(y)
   
   for (i in (length(y)+1):400) {
-    # Gets the value the chain goes from
+    # Gets the last value of chain
     t = tail(y,1)
     
     # Sample a value with prob. from value n-1
@@ -55,6 +55,7 @@ simulate1 <- function(y) {
 }
 
 simulate2 <- function(y){
+  # Return E(P_12 | actual and simulated data)
   m=get_expected_m(y)
   
   for (i in (length(y)+1):400) {
@@ -62,7 +63,6 @@ simulate2 <- function(y){
     y[i]=sample(c(1,2,3),1,prob = m[t,])
     m=get_expected_m(y)
   }
-  # Return E(P_12 | actual and simulated data)
   return (m[1,2])
 }
 
