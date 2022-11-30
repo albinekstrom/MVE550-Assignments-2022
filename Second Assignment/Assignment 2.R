@@ -2,6 +2,7 @@
 y=c(1,2,3,2,0,0,1,4,2)
 #p <- seq(0, 10, length.out=1001)
 curve(dgamma(x,sum(y),9),to=5)
+
 #plot(p,dgamma(p,sum(y),9),to=5,type="l") # Posterior observed y
 #lines(p,dgamma(p,sum(y)+p,9+1),to=5,col="green") # postyerior observer y_11
 #2.a 2nd version
@@ -60,7 +61,6 @@ z=list(c(1),
        c(0,0,1,4,2))
 
 z=c()
-#2.b
 
 n <- 10
 lambda <- 0.7
@@ -93,17 +93,22 @@ for (g in 2:nr_gen-2)
 }
 
 
+#2.b
 a <- function(lambda) {dpois(0:10,lambda)}
 
-G <- Vectorize(function(s,lambda) 
+G <- Vectorize(function(s,lambda=2) 
   {
   a=a(lambda)
   sum(a[1:length(a)]*s^(0:(length(a)-1)))
   })
 
-GS <- function(s) {G(s)-s}
+GS <- Vectorize(function(x) {G(x)-x})
 
-#2.b
+#2.c
+
+
+
+
 
 
 
