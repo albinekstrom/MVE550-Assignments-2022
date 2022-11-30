@@ -38,47 +38,38 @@ get_expected_m <- function(y)
 }
 
 
-simulate1 <- function(y){
+simulate1 <- function(y) {
   m=get_expected_m(y)
-  for (i in (length(y)+1):400)
-  {
+  
+  for (i in (length(y)+1):400) {
+    # Gets the value the chain goes from
     t = tail(y,1)
-    y[i]=sample(c(1,2,3),1,prob = m[t,])
-    m=get_expected_m(y)
-    hist(y)
-    #Sys.sleep(0.05)
-  }
-  return (y)
-}
-
-simulate1 <- function(y){
-  m=get_expected_m(y)
-  for (i in (length(y)+1):400)
-  {
-    t = tail(y,1)
-    y[i]=sample(c(1,2,3),1,prob = m[t,])
-    m=get_expected_m(y)
-    #hist(y)
-    #Sys.sleep(0.05)
+    
+    # Sample a value with prob. from value n-1
+    y[i] = sample(c(1,2,3),1,prob = m[t,])
+    
+    # New expected expected posterior
+    m = get_expected_m(y)
   }
   return (y)
 }
 
 simulate2 <- function(y){
   m=get_expected_m(y)
-  for (i in (length(y)+1):400)
-  {
+  
+  for (i in (length(y)+1):400) {
     t = tail(y,1)
     y[i]=sample(c(1,2,3),1,prob = m[t,])
     m=get_expected_m(y)
-    #hist(y)
-    #Sys.sleep(0.05)
   }
+  # Return E(P_12 | actual and simulated data)
   return (m[1,2])
 }
 
 simulate3 <- function(y){
   m1 = get_expected_m(y)
+  
+  # Store the expected posterior
   m = m1
   for (i in (length(y)+1):400)
   {
