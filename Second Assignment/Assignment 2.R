@@ -60,19 +60,6 @@ z=list(c(1),
        c(3,2),
        c(0,0,1,4,2))
 
-z=c()
-
-n <- 10
-lambda <- 0.7
-G <- Vectorize(function(s) {sum(s^(0:n)*dpois(0:n,lambda))})
-
-s <- seq(0, 1, length.out=1001)
-plot(c(0,1), c(0,1), type="n", xlab="s", ylab="G(s)")
-lines(s, G(s))
-
-optimize(G(s)-s==0,interval = c(0,1))
-#abline(a=0, b=1)
-
 # 2nd gen
 parent <- c(2,1)
 child1 <- c(3,parent[2])
@@ -96,7 +83,9 @@ for (g in 2:nr_gen-2)
 #2.b
 a <- function(lambda) {dpois(0:10,lambda)}
 
-G <- Vectorize(function(s,lambda=2) 
+# average child per woman in Sweden according to SCB
+lambda <- 1.67 
+G <- Vectorize(function(s) 
   {
   a=a(lambda)
   sum(a[1:length(a)]*s^(0:(length(a)-1)))
@@ -104,9 +93,33 @@ G <- Vectorize(function(s,lambda=2)
 
 GS <- Vectorize(function(x) {G(x)-x})
 
+# smallest root
+root <- uniroot(GS, lower=0, upper=1) 
+curve(GS(x))
+
+
 #2.c
+y=c(1,2,3,2,0,0,1,4,2)
+posterior <- dgamma(1:10,sum(y),9)
+lambda_samples <- sample(1:10, 1000, replace = TRUE, prob = posterior)
 
+# function to calculate extinction prob.
+min_root <- function(lambda) {
+    a <- dpois(0:10,lambda)
+    G <- Vectorize(sum(a[1:length(a)]*s^(0:(length(a)-1))))
+    }
 
+# average child per woman in Sweden according to SCB
+lambda <- 1.67 
+G <- Vectorize(function(s) 
+{
+  a=a(lambda)
+  sum(a[1:length(a)]*s^(0:(length(a)-1)))
+})
+
+GS <- Vectorize(function(x) {G(x)-x})
+min_root <- uniroot(GS(s), lower=0, upper=1)
+#mean <- sum(s)/length(s)
 
 
 
