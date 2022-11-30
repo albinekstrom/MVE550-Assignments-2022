@@ -46,9 +46,9 @@ for (i in 1:3){
 }
 
 
-n <- 3
+n <- 4
 # Set up plot
-maxsize = 20
+maxsize = 7
 maxchildren=3
 a=c(1/4,1/4,1/4,1/4)
 plot(1:n, c(0, rep(maxsize, n-1)), type="n", 
@@ -62,19 +62,48 @@ z=list(c(1),
 z=c()
 #2.b
 
+n <- 10
+lambda <- 0.7
+G <- Vectorize(function(s) {sum(s^(0:n)*dpois(0:n,lambda))})
+
+s <- seq(0, 1, length.out=1001)
+plot(c(0,1), c(0,1), type="n", xlab="s", ylab="G(s)")
+lines(s, G(s))
+
+optimize(G(s)-s==0,interval = c(0,1))
+#abline(a=0, b=1)
+
+# 2nd gen
+parent <- c(2,1)
+child1 <- c(3,parent[2])
+child2 <- c(3,parent[2]+1)
+
+
+lines(parent,child1)
+lines(c(parent[1],child1[1]),parent)
+
+lines(c(parent[1],child1[1]), c(parent[2],child1[2]))
+lines(c(parent[1],child2[1]), c(parent[2],child2[2]))
+
+nr_gen <- 4
 result <- c(1,2,5,7)
-for (i in 2:n) { # generation
-  for (j in 1:result[i-1]){ # parent
-    children <- unlist(z[i])[j]
-      for (k in 1:children){
-        result[i] <- result[i] + 1 # childs height?
-        lines(c(i-1,i), c(j, result[i]))
-      }
-    }
+for (g in 2:nr_gen-2)
+{
+  lines(c(g,g-1), c(result[g-1],result[g]))
 }
 
 
+a <- function(lambda) {dpois(0:10,lambda)}
 
+G <- Vectorize(function(s,lambda) 
+  {
+  a=a(lambda)
+  sum(a[1:length(a)]*s^(0:(length(a)-1)))
+  })
+
+GS <- function(s) {G(s)-s}
+
+#2.b
 
 
 
