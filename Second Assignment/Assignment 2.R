@@ -1,78 +1,59 @@
-#2.a
+# Data
 y=c(1,2,3,2,0,0,1,4,2)
-curve(dgamma(x,sum(y),9),to=5)
 
-
-
-n <- 4
-# Set up plot
-maxsize = 7
-maxchildren=3
-a=c(1/4,1/4,1/4,1/4)
-plot(1:n, c(0, rep(maxsize, n-1)), type="n", 
-     xlab="generation", ylab="Gen.size")
-
-z=list(c(1),
-       c(1,2),
-       c(3,2),
-       c(0,0,1,4,2))
-
-
-#2.b
-a <- function(lambda) {dpois(0:10,lambda)} # Child dist.
-
+# Functions
 G <- Vectorize(function(s,lambda) 
-  {
+{
   a=dpois(0:10,lambda)
   sum(a[1:length(a)]*s^(0:(length(a)-1)))
-  })
+})
 
-GS <- Vectorize(function(x) {abs(G(x)-x)})
+a <- function(lambda) {dpois(0:10,lambda)} # Child dist.
 
 get_extintion_p = Vectorize(function(lambda) {
   optimize(Vectorize(function(x) {abs(G(x,lambda)-x)}), interval =c(0,0.99))$minimum
 })
 
-
-get_extintion_p = Vectorize(function(lambda) {
-  
-  
-  optimize(Vectorize(function(x) {abs(G(x,lambda)-x)}), interval =c(0,0.99))$minimum
-})
+posterior <-function(x) {dgamma(x,sum(y),9)}
 
 
+#2.a)
+curve(dgamma(x,sum(y),9),to=5)
 
-# smallest root
-#root <- uniroot(GS, lower=0, upper=1) 
-#optimize(GS,interval = c(0,0.99))
-#curve(GS(x))
+#2.b)
+curve(get_extintion_p(x))
 
+#2.c)
 
-#2.c
-y=c(1,2,3,2,0,0,1,4,2)
-prior <-function(x) {dgamma(x,sum(y),9)}
-
-g_x <- function(p) dgamma(p,sum(y),9)*Vectorize(unc)(p)
-integrate(g_x, 1/10, 1)$value/integrate(g_x, 0, 1)$value
+g_ext <- function(p) posterior(p)*get_extintion_p(p)
 
 
+integrate(Vectorize(g_ext), 0, Inf)$value
 
-i1=integrate(Vectorize(unc), 0, Inf)$value
 
-
-#2.d
+#2.d)
 p <- seq(0, 10, length.out=500)
-posterior <- dgamma(p,sum(y),9)
-
-
 ext_list = c()
 
+# Sample extinctions
 for (i in 1:1000){
-  lambda_sample <- sample(p, 1, prob = posterior)
+  lambda_sample <- sample(p, 1, prob = posterior(p))
   ext_list[i]=get_extintion_p(lambda_sample)
 }
 
+# avg. extinction | y
 mean(ext_list)
 
+#2.e
+get_lh <- function(x)
+{
+  likelyhood = 1
+  for (i in 1:length(y))
+  {
+    likelyhood = likelyhood*dpois(y[i],x)
+  }
+  return (likelyhood)
+}
 
-
+max_lambda = optimize(Vectorize(get_lh),c(0,10),maximum = T)$maximum
+get_extintion_p(max_lambda)
