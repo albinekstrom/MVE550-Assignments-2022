@@ -2,13 +2,15 @@
 y=c(1,2,3,2,0,0,1,4,2)
 
 # Functions
+#a <- function(lambda) {dpois(0:10,lambda)} # Child dist.
+
 G <- Vectorize(function(s,lambda) 
 {
-  a=dpois(0:10,lambda)
+  a=dpois(0:50,lambda)
   sum(a[1:length(a)]*s^(0:(length(a)-1)))
 })
 
-a <- function(lambda) {dpois(0:10,lambda)} # Child dist.
+
 
 get_extintion_p = Vectorize(function(lambda) {
   optimize(Vectorize(function(x) {abs(G(x,lambda)-x)}), interval =c(0,0.99))$minimum
@@ -55,5 +57,6 @@ get_lh <- function(x)
   return (likelyhood)
 }
 
-max_lambda = optimize(Vectorize(get_lh),c(0,10),maximum = T)$maximum
-get_extintion_p(max_lambda)
+max_lambda = optimize(Vectorize(get_lh),c(0,50),maximum = T)
+max_lambda$maximum
+get_extintion_p(max_lambda$maximum)
