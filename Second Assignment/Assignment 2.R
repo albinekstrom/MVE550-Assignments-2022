@@ -17,11 +17,11 @@ get_extintion_p = Vectorize(function(lambda) {
 posterior <-function(x) {dgamma(x,sum(y),9)}
 
 
-#2.a)
+#2.a) Plotting the posterior of lambda
 curve(dgamma(x,sum(y),9),to=5)
 
-#2.b)
-curve(get_extintion_p(x))
+#2.b) Plotting the rate of extinction based on different values of lambda = x in the curve
+curve(get_extintion_p(x), to = 10)
 
 #2.c)
 
