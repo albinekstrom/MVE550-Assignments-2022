@@ -21,7 +21,7 @@ posterior <-function(x) {dgamma(x,sum(y),9)}
 curve(dgamma(x,sum(y),9),to=5)
 
 #2.b) Plotting the rate of extinction based on different values of lambda = x in the curve
-curve(get_extintion_p(x), to = 10)
+curve(get_extintion_p(x), to = 5)
 
 #2.c)
 
