@@ -2,7 +2,7 @@
 y=c(1,2,3,2,0,0,1,4,2)
 
 # Functions
-#a <- function(lambda) {dpois(0:10,lambda)} # Child dist.
+#a <- function(lambda) {dpois(0:50,lambda)} # Child dist.
 
 G <- Vectorize(function(s,lambda) 
 {
@@ -21,6 +21,7 @@ posterior <-function(x) {dgamma(x,sum(y),9)}
 
 #2.a) Plotting the posterior of lambda
 curve(dgamma(x,sum(y),9),to=5)
+
 
 #2.b) Plotting the rate of extinction based on different values of lambda = x in the curve
 curve(get_extintion_p(x), to = 5)

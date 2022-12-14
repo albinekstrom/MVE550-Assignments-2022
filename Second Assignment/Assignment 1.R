@@ -99,9 +99,7 @@ simulate4 <- function(y){
 y = c(1,2,3,2,3,1,2,1,3,2)
 
 P = get_expected_m(y)
-P1 = P[1,]
-P2 = P[2,]
-P3 = P[3,]
+
 
 # How to get E(P|y)
 
