@@ -8,11 +8,6 @@ sick<-which(z==1)
 plot(x,y)
 points(x[sick],y[sick],col='red')
 
-t_1 <- seq(0, 10, length.out=50)
-t_2 <- seq(0, 10, length.out=50)
-t_3 <- seq(0, 10, length.out=50)
-
-
 f_d <- function(x,y,theta_1,theta_2,theta_3){
   a=exp(exp(theta_1)*x + exp(theta_2)*((y-theta_3)^2))
   return((a-1)/(a+1))
@@ -24,12 +19,15 @@ Likelihood <- function(theta){
 
 
 post <- function(theta){
-  return(sum(log(f_d(x,y,theta[1],theta[2],theta[3])/3)))
+  return(log(Likelihood(theta)))
 }
 
 
+
+
+
 #b
-Posterior(x,y)
+
 # post_th(x,y,c(1,2,25))
 post(c(1,1,20))
 
@@ -52,6 +50,10 @@ for (i in 2:N) {
   else
     result[i,] <- result[i-1,]
 }
-plot(result)
+plot(result[,1],type='l')
+lines(result[,2],col='red')
+lines(result[,3],col='blue')
+
+
 
 
