@@ -13,37 +13,45 @@ t_2 <- seq(0, 10, length.out=50)
 t_3 <- seq(0, 10, length.out=50)
 
 
-disease_p <- function(x,y,theta_1,theta_2,theta_3){
+f_d <- function(x,y,theta_1,theta_2,theta_3){
   a=exp(exp(theta_1)*x + exp(theta_2)*((y-theta_3)^2))
   return((a-1)/(a+1))
 }
 
-Likelyhood <- function(x,y,theta_1,theta_2,theta_3){
-  lh = 1
-  for (i in length(x)) {
-  lh = lh * disease_p(x[i],y[i],theta_1,theta_2,theta_3)
-}
-  return(lh)
+Likelihood <- function(theta){
+  return(prod(f_d(x,y,theta[1],theta[2],theta[3])))
 }
 
-Posterior <- function(x,y){
-  lh = 1
-  theta = c()
-  theta[1] = runif(1)
-  theta[2] = runif(1)
-  theta[3] = runif(1,10,25)
-  lh = Likelyhood(x,y, theta[1],theta[2],theta[3])
-  
-  return(c(lh*theta[1],lh*theta[2],lh*theta[3]))
+
+post <- function(theta){
+  return(sum(log(f_d(x,y,theta[1],theta[2],theta[3])/3)))
 }
 
-post_th <- function(x,y,theta){
-  lh = Likelyhood(x,y, theta[1],theta[2],theta[3])
-  
-  return(c(lh*theta[1],lh*theta[2],lh*theta[3]))
-}
 
 #b
 Posterior(x,y)
 # post_th(x,y,c(1,2,25))
+post(c(1,1,20))
+
+#c
+# Simulate from the posterior
+N <- 10000
+result <- matrix(0,N,3)
+#Initialize some starting theta: 
+result[1,] <- c(1, 1, 15)
+for (i in 2:N) {
+  prop <- rnorm(3,result[i-1,],0.4)
+  while(is.nan(post(prop))){
+    prop <- rnorm(3,result[i-1,],0.4)
+  }
+  print(prop)
+  print(post(prop))
+  
+  if (runif(1)<post(prop)/post(result[i-1,]))
+    result[i,] <- prop
+  else
+    result[i,] <- result[i-1,]
+}
+plot(result)
+
 
