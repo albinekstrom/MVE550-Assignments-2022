@@ -94,6 +94,3 @@ plot(t[1,],t[2,],pch=2)
 
 # 2e
 hist(replicate(1000,calc_z(generate_trees(36))))
-
-
-
