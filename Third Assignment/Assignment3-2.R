@@ -6,6 +6,15 @@ generate_trees <- function(lambda){
   return(m)
 }
 
+generate_trees_prior <- function(counts,o){
+  lambda=rgamma(1,counts,o)
+  p = rpois(1,lambda)[1]
+  x=runif(p,0,1)
+  y=runif(p,0,1)
+  m = matrix(c(x,y),3,p)
+  return(m)
+}
+
 calc_z <- function(m){
   x=m[1,]
   y=m[2,]
@@ -28,8 +37,6 @@ calc_z <- function(m){
   return (mean(min_v))
   
 }
-
-
 
 
 generate_pois <- function(tmin,tmax){
@@ -75,18 +82,18 @@ prob(Ci, lambda, 3)*prob(C1, lambda, 1)*prob(C2, lambda, 1)+
 prob(Ci, lambda, 4)*prob(C1, lambda, 0)*prob(C2, lambda, 0)
 
 # 2c
-generate_trees(lambda=36)
+t=generate_trees(lambda=36)
+plot(t[1,],t[2,],pch=2)
 # t = replicate(1000, generate_pois(0.2,0.6)) # Sample 1a
 # sum(t)/length(t)
 
 
 # 2d
-lambda=rgamma(1,36,1)
-t = generate_square(lambda)
+t = generate_trees_prior(36,1)
 plot(t[1,],t[2,],pch=2)
 
 # 2e
-generate_square(36)
+hist(replicate(1000,calc_z(generate_trees(36))))
 
 
 
