@@ -84,8 +84,13 @@ plot(t[1,],t[2,],pch=2)
 t = generate_trees_prior(36,1)
 plot(t[1,],t[2,],pch=2)
 
+<<<<<<< HEAD:Third Assignment/Assignment 3.2.R
 ## e)
 hist(replicate(1000,calc_z(generate_trees_prior(36,1))))
 
 
 
+=======
+# 2e
+hist(replicate(1000,calc_z(generate_trees(36))))
+>>>>>>> bb9d90f81c815f1f614274f156c24fb3f6db144c:Third Assignment/Assignment3-2.R
